@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transfu'Lab 🩸</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background: linear-gradient(180deg, #ff6666, #990000);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: background 1s ease;
+    }
+    h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px #550000;
+    }
+    p {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    select, input {
+        font-size: 18px;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 12px;
+        border: none;
+        width: 240px;
+        text-align: center;
+        outline: none;
+    }
+    button {
+        background-color: #ff1a1a;
+        color: white;
+        font-size: 20px;
+        padding: 16px 30px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 8px #550000;
+    }
+    button:hover {
+        background-color: #800000;
+        transform: scale(1.08);
+    }
+    #result {
+        font-size: 26px;
+        font-weight: bold;
+        margin-top: 30px;
+        text-shadow: 2px 2px 6px #550000;
+        position: relative;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    #result::before, #result::after {
+        content: "🩸";
+        font-size: 28px;
+        position: absolute;
+        top: -5px;
+    }
+    #result::before { left: -35px; }
+    #result::after { right: -35px; }
+</style>
+</head>
+<body>
+
+<h1>Transfu'Lab 🩸</h1>
+<p>Entrez le poids en grammes et choisissez le type de sang ou de produit :</p>
+
+<select id="typeProduit">
+    <option value="SangTotal">Sang Total</option>
+    <option value="CGR">CGR</option>
+    <option value="CSP">CSP</option>
+    <option value="PFC">PFC</option>
+</select>
+<br>
+<input type="number" id="grammes" placeholder="Poids en grammes">
+<br>
+<button onclick="calculer()">Calculer</button>
+
+<div id="result"></div>
+
+<script>
+function calculer() {
+    let typeProduit = document.getElementById('typeProduit').value;
+    let grammes = parseFloat(document.getElementById('grammes').value);
+    let resultDiv = document.getElementById('result');
+    
+    if(isNaN(grammes)) { 
+        resultDiv.innerText = "Veuillez entrer un poids valide !";
+        resultDiv.style.opacity = 1;
+        return;
+    }
+
+    let result = 0;
+    if(typeProduit === "SangTotal") result = ((grammes - 29)/1.08) - 60;
+    else if(typeProduit === "CGR") result = (grammes - 29)/1.07;
+    else if(typeProduit === "CSP") result = (grammes - 29)/1.03;
+    else if(typeProduit === "PFC") result = (grammes - 29)/1.03;
+
+    resultDiv.innerText = "Résultat: " + result.toFixed(2) + " mL";
+    resultDiv.style.opacity = 0;
+    setTimeout(() => { resultDiv.style.opacity = 1; }, 50);
+}
+</script>
+
+</body>
+</html>
